@@ -1,7 +1,7 @@
 import React from "react";
 import { ScCartCheckout } from "./scParts";
 import { useContext } from "react";
-import { CartContext } from "./CartContext";
+import { CartContext } from "../contexts/CartContext";
 
 // Components
 import Item from "./ShoppingCartItem";
