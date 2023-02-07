@@ -10,16 +10,42 @@ import ShoppingCart from "./components/ShoppingCart";
 
 function App() {
   const [products, setProducts] = useState(data);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(initialStateRead("cart"));
+
+  function cartLocalStorageWrite(okuyomYaBen) {
+    localStorage.setItem("cart", JSON.stringify(okuyomYaBen));
+  };
+
+  function cartLocalStorageRead(key) {
+    return JSON.parse(localStorage.getItem(key));
+  };
+
+  function initialStateRead(key) {
+    const initialCart = cartLocalStorageRead(key);
+    if(initialCart) {
+      return initialCart;
+    }else {
+      return [];
+    }
+  }
+
 
   const addItem = (item) => {
-    setCart([...cart, item]);
+    const newCart = [...cart, item];
+    setCart(newCart);
+    cartLocalStorageWrite(newCart);
   };
+
+  const removeItem = (id) => {
+    const newCart = [...cart.filter((r) => r.id !== id )];
+    setCart(newCart);
+    cartLocalStorageWrite(newCart);
+  }
 
   return (
     <div className="App">
       <ProductContext.Provider value={{ products, addItem }}>
-        <CartContext.Provider value={{ cart }} >
+        <CartContext.Provider value={{ cart,removeItem }} >
           <Navigation /*cart={cart} */ />
           <main className="content">
             <Route exact path="/">
